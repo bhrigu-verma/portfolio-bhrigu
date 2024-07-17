@@ -35,8 +35,8 @@
       iframeStyles(`
         .chat-frame {
           position: fixed;
-          right: 0;
-          bottom: 0;
+          right: 50px;
+          bottom: 50px;
           border: none;
         }
       `);
@@ -46,7 +46,7 @@
         let dimensions = JSON.parse(e.data);
         iframe.width = dimensions.width;
         iframe.height = dimensions.height;
-        iframe.contentWindow.postMessage("3912a0bb-1b9c-4836-93f5-cc1a9b5afa03", "http://localhost:3000/");
+        iframe.contentWindow.postMessage("1754e2ff-7dbe-40c5-90ce-e60cd3047d41", "http://localhost:3000/");
       });
     });
   </script>
