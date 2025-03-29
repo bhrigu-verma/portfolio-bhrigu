@@ -21,36 +21,55 @@
     <link rel="stylesheet" href="style.css">
  
 <script>
-    
+    // Create the iframe
     const iframe = document.createElement("iframe");
-    
+
+    // Function to add styles
     const iframeStyles = (styleString) => {
-    const style = document.createElement('style');
-    style.textContent = styleString;
-    document.head.append(style);
-    }
-    
-    iframeStyles(
+        const style = document.createElement('style');
+        style.textContent = styleString;
+        document.head.appendChild(style);
+    };
+
+    // Add styles using backticks (``) for multi-line CSS
+    iframeStyles(`
         .chat-frame {
             position: fixed;
             bottom: 50px;
             right: 50px;
+            width: 400px; /* Set default dimensions */
+            height: 500px;
             border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
         }
-    )
-    
-    iframe.src = "http://localhost:3000/chatbot"
-    iframe.classList.add('chat-frame')
-    document.body.appendChild(iframe)
-    
+    `);
+
+    // Set iframe attributes
+    iframe.src = "http://localhost:3000/chatbot";
+    iframe.classList.add('chat-frame');
+    document.body.appendChild(iframe);
+
+    // Handle postMessage communication
     window.addEventListener("message", (e) => {
-        if(e.origin !== "http://localhost:3000") return null
-        let dimensions = JSON.parse(e.data)
-        iframe.width = dimensions.width
-        iframe.height = dimensions.height
-        iframe.contentWindow.postMessage("99772c99-4078-4f5e-9893-edc3b967b1f5", "http://localhost:3000/")
-    })
-        
+        if (e.origin !== "http://localhost:3000") return;
+
+        try {
+            let dimensions = JSON.parse(e.data);
+            if (dimensions.width && dimensions.height) {
+                iframe.width = dimensions.width;
+                iframe.height = dimensions.height;
+            }
+
+            // Ensure the postMessage target URL matches the iframe src
+            iframe.contentWindow.postMessage(
+                "99772c99-4078-4f5e-9893-edc3b967b1f5", 
+                "http://localhost:3000/chatbot"
+            );
+        } catch (error) {
+            console.error("Error parsing message:", error);
+        }
+    });
 </script>
 </head>
 
